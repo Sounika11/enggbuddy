@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Interview Questions</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#f8fafc;
+
+min-height:100vh;
+
+}
+
+.toggle-btn{
+
+    position:fixed;
+
+    top:20px;
+
+    left:200px;
+
+    z-index:1000;
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.sidebar.hidden{
+
+    width:0;
+
+    padding:0;
+
+    overflow:hidden;
+
+}
+
+.content.full{
+
+    width:100%;
+
+}
+
+.wrapper{
+
+display:flex;
+
+min-height:100vh;
+
+}
+
+.sidebar{
+
+width:280px;
+
+background:#0f172a;
+
+color:white;
+
+padding:30px;
+
+}
+
+.sidebar h2{
+
+margin-bottom:25px;
+
+}
+
+.info-box{
+
+background:#1e293b;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-bottom:15px;
+
+}
+
+.content{
+
+flex:1;
+
+padding:40px;
+
+}
+
+.page-title{
+
+font-size:32px;
+
+font-weight:700;
+
+margin-bottom:30px;
+
+color:#0f172a;
+
+}
+
+.category{
+
+margin-bottom:35px;
+
+}
+
+.category h2{
+
+margin-bottom:20px;
+
+color:#2563eb;
+
+}
+
+.question-card{
+
+background:white;
+
+border-radius:16px;
+
+padding:20px;
+
+margin-bottom:15px;
+
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+.info-box input,
+.info-box select{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-top:8px;
+
+    border:none;
+
+    border-radius:8px;
+
+}
+
+.question{
+
+font-weight:600;
+
+font-size:18px;
+
+margin-bottom:15px;
+
+}
+
+.answer{
+
+display:none;
+
+margin-top:15px;
+
+padding:15px;
+
+background:#ecfdf5;
+
+border-left:5px solid #22c55e;
+
+border-radius:10px;
+
+}
+
+.btn{
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+.btn:hover{
+
+background:#1d4ed8;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <button
+    id="toggleSidebar"
+    class="toggle-btn"
+>
+☰
+</button>
+
+<div class="wrapper">
+
+<div class="sidebar">
+
+<h2>Interview Settings</h2>
+
+<form action="/generate_interview" method="POST">
+
+<div class="info-box">
+
+    <label>Topic</label>
+
+    <input
+        type="text"
+        name="topic"
+        value="{{ topic }}"
+    >
+
+</div>
+
+<div class="info-box">
+
+    <label>Difficulty</label>
+
+    <select name="difficulty">
+
+        <option {% if difficulty=="Beginner" %}selected{% endif %}>
+            Beginner
+        </option>
+
+        <option {% if difficulty=="Intermediate" %}selected{% endif %}>
+            Intermediate
+        </option>
+
+        <option {% if difficulty=="Advanced" %}selected{% endif %}>
+            Advanced
+        </option>
+
+    </select>
+
+</div>
+
+<div class="info-box">
+
+    <label>Question Type</label>
+
+    <select name="question_type">
+
+        <option {% if question_type=="brief" %}selected{% endif %}>
+            brief
+        </option>
+
+        <option {% if question_type=="detailed" %}selected{% endif %}>
+            detailed
+        </option>
+
+    </select>
+
+</div>
+
+<button
+    class="btn"
+    type="submit"
+>
+
+    Generate Again
+
+</button>
+</form>
+
+</div>
+
+<div class="content">
+
+<h1 class="page-title">
+
+AI Interview Questions
+
+</h1>
+
+{% for card in cards %}
+
+<div class="question-card">
+
+    <div class="category">
+
+        {{ card.category }}
+
+    </div>
+
+    <div class="question">
+
+        {{ loop.index }}. {{ card.question }}
+
+    </div>
+
+    <button
+        class="btn"
+        onclick="toggleAnswer('answer{{ loop.index }}')"
+    >
+        Show Answer
+    </button>
+
+    <div
+        class="answer"
+        id="answer{{ loop.index }}"
+    >
+
+        {{ card.answer }}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+function toggleAnswer(id){
+
+    const answer =
+    document.getElementById(id);
+
+    if(answer.style.display === "block"){
+
+        answer.style.display = "none";
+
+    }
+
+    else{
+
+        answer.style.display = "block";
+
+    }
+
+}
+
+const sidebar =
+document.querySelector(".sidebar");
+
+const content =
+document.querySelector(".content");
+
+const btn =
+document.getElementById("toggleSidebar");
+
+btn.addEventListener("click", () => {
+
+    sidebar.classList.toggle("hidden");
+
+    content.classList.toggle("full");
+
+    if(sidebar.classList.contains("hidden")){
+
+        btn.innerHTML = "➡";
+
+        btn.style.left = "20px";
+
+    }
+
+    else{
+
+        btn.innerHTML = "☰";
+
+        btn.style.left = "300px";
+
+    }
+
+});
+
+</script>
+
+</body>
+
+</html>

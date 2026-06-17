@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Interview Generator</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+
+            min-height:100vh;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            background:
+            linear-gradient(
+                135deg,
+                #2b4f9e,
+                #34455f,
+                 #1e315e
+            );
+
+            padding:20px;
+
+        }
+
+        .container{
+
+            width:100%;
+
+            max-width:550px;
+
+            background:white;
+
+            padding:45px;
+
+            border-radius:25px;
+
+            text-align:center;
+
+            box-shadow:
+            0 20px 40px rgba(0,0,0,0.25);
+
+        }
+
+        h1{
+
+            color:#0f172a;
+
+            margin-bottom:10px;
+
+            font-size:38px;
+
+        }
+
+        .subtitle{
+
+            color:#64748b;
+
+            margin-bottom:30px;
+
+            font-size:15px;
+
+        }
+
+        input,
+        select{
+
+            width:100%;
+
+            padding:15px;
+
+            border-radius:12px;
+
+            border:1px solid #d1d5db;
+
+            margin-bottom:20px;
+
+            font-size:16px;
+
+            outline:none;
+
+        }
+
+        input:focus,
+        select:focus{
+
+            border-color:#2563eb;
+
+        }
+
+        button{
+
+            width:100%;
+
+            padding:15px;
+
+            border:none;
+
+            border-radius:12px;
+
+            background:
+            linear-gradient(
+                to right,
+                #2563eb,
+                #4f46e5
+            );
+
+            color:white;
+
+            font-size:17px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+        }
+
+        button:hover{
+
+            transform:translateY(-3px);
+
+            box-shadow:
+            0 10px 25px rgba(37,99,235,0.35);
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎯 AI Interview Generator</h1>
+
+        <p class="subtitle">
+
+            Generate personalized interview questions
+            and answers instantly.
+
+        </p>
+
+        <form
+            action="/generate_interview"
+            method="POST"
+        >
+
+            <input
+                type="text"
+                name="topic"
+                placeholder="Enter topic (Python, DBMS, ML...)"
+                required
+            >
+
+            <select
+                name="difficulty"
+                required
+            >
+
+                <option value="Beginner">
+                    Beginner
+                </option>
+
+                <option value="Intermediate">
+                    Intermediate
+                </option>
+
+                <option value="Advanced">
+                    Advanced
+                </option>
+
+            </select>
+
+            <select
+                name="question_type"
+                required
+            >
+
+                <option value="brief">
+                    Brief Questions + Answers
+                </option>
+
+                <option value="mcq">
+                    MCQ Quiz
+                </option>
+
+            </select>
+
+            <button type="submit">
+
+                Generate Questions
+
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

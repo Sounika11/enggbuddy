@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>AI Resume Analysis</title>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Poppins',sans-serif;
+    }
+
+    body{
+
+        min-height:100vh;
+
+        background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e293b,
+            #2563eb
+        );
+
+        padding:0.5px;
+
+    }
+
+    .ats-summary{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:50px;
+
+    margin-bottom:40px;
+
+    flex-wrap:wrap;
+
+}
+
+.progress-ring{
+
+    width:200px;
+    height:200px;
+    border-radius:50%;
+
+    background:
+    conic-gradient(
+        #22c55e 0deg var(--score),
+        #d1d5db var(--score) 360deg
+    );
+
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.progress-inner{
+
+    width:145px;
+
+    height:145px;
+
+    border-radius:50%;
+
+    background:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.progress-inner h2{
+
+    font-size:38px;
+
+    color:#0f172a;
+
+}
+
+.progress-inner span{
+
+    color:#64748b;
+
+    font-weight:600;
+
+}
+
+.ats-info h2{
+
+    font-size:30px;
+
+    color:#111827;
+
+    margin-bottom:10px;
+
+}
+
+.ats-info p{
+
+    font-size:16px;
+
+    color:#475569;
+
+}
+
+.status{
+
+    color:#22c55e !important;
+
+    font-weight:600;
+
+    margin-top:10px;
+
+}
+
+
+
+
+    .container{
+
+        max-width:1100px;
+
+        margin:auto;
+
+    }
+
+    .header{
+
+        text-align:center;
+
+        color:rgb(235, 229, 229);
+
+        margin-bottom:40px;
+        
+
+    }
+
+    .header i{
+
+        font-size:30px;
+
+        color:#60a5fa;
+
+        margin-bottom:15px;
+
+    }
+
+    .header h1{
+
+        font-size:20px;
+
+        margin-bottom:10px;
+
+    }
+
+    .header p{
+
+        color:#e9e2df;
+
+        font-size:18px;
+
+    }
+
+    .analysis-card{
+
+       background: beige;
+        border-radius:25px;
+
+        padding:35px;
+
+        box-shadow:
+        0 15px 40px rgba(0,0,0,0.25);
+
+        min-height: 150px;
+
+    }
+
+    .score-box{
+
+        background:
+        linear-gradient(
+            to right,
+            #136ca7,
+            #3658b3
+        );
+
+        color:white;
+
+        text-align:center;
+
+        padding:10px;
+
+        border-radius:20px;
+
+        margin-bottom:30px;
+
+    }
+
+    .score-box h2{
+
+        font-size:18px;
+
+        margin-bottom:10px;
+
+    }
+
+    .score-box p{
+
+        font-size:24px;
+
+        font-weight:bold;
+
+    }
+
+    .result-content{
+
+        background:#a1c1e0;
+        
+
+        padding:15px;
+
+        border-radius:15px;
+
+        line-height:1.9;
+
+        color:#1e293b;
+
+        white-space:pre-wrap;
+
+        font-size:16px;
+
+        border-left:6px solid #2563eb;
+
+    }
+
+    .cards-container{
+
+    display:grid;
+
+    gap:20px;
+
+}
+
+.skill-tag{
+
+    display:inline-block;
+
+    background:#fff7ed;
+
+    color:#ea580c;
+
+    padding:8px 14px;
+
+    border-radius:20px;
+
+    margin:6px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    border:1px solid #fdba74;
+
+}
+
+
+
+.resume-card{
+    transition:0.3s;
+}
+
+.resume-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+.resume-card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+    border-left:5px solid #2563eb;
+
+}
+
+.resume-card h3{
+
+    color:#2563eb;
+
+    margin-bottom:15px;
+
+    font-size:22px;
+
+    border-bottom:2px solid #e5e7eb;
+
+    padding-bottom:10px;
+
+}
+
+.resume-card p{
+
+    color:#1e293b;
+
+    line-height:1.8;
+
+    margin-bottom:8px;
+
+}
+
+
+     .button-group{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+
+}
+
+.button-group .btn{
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:0.3s ease;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+/* Download Button */
+
+.download-btn{
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:white;
+
+    box-shadow:
+    0 8px 20px rgba(37,99,235,0.35);
+
+}
+
+.download-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 15px 30px rgba(37,99,235,0.5);
+
+}
+
+/* Analyze Again */
+
+.analyze-btn{
+
+    background:linear-gradient(
+        135deg,
+        #7c3aed,
+        #a855f7
+    );
+
+    color:white;
+
+    box-shadow:
+    0 8px 20px rgba(124,58,237,0.35);
+
+}
+
+.analyze-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 15px 30px rgba(124,58,237,0.5);
+
+}
+
+/* Home */
+
+.home-btn{
+
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #059669
+    );
+
+    color:white;
+
+    box-shadow:
+    0 8px 20px rgba(16,185,129,0.35);
+
+}
+
+.home-btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 15px 30px rgba(16,185,129,0.5);
+
+}
+
+    .action-buttons{
+
+        display:flex;
+
+        justify-content:center;
+
+        gap:20px;
+
+        margin-top:35px;
+
+        flex-wrap:wrap;
+
+    }
+
+    .btn{
+
+        text-decoration:none;
+
+        padding:15px 28px;
+
+        border-radius:14px;
+
+        color:white;
+
+        font-weight:600;
+
+        transition:0.3s;
+
+    }
+
+    .btn-primary{
+
+        background:
+        linear-gradient(
+            to right,
+            #2563eb,
+            #4f46e5
+        );
+
+    }
+
+    .btn-secondary{
+
+        background:
+        linear-gradient(
+            to right,
+            #10b981,
+            #059669
+        );
+
+    }
+
+    .btn:hover{
+
+        transform:translateY(-4px);
+
+    }
+
+    .footer{
+
+        text-align:center;
+
+        color:#cbd5e1;
+
+        margin-top:30px;
+
+        font-size:15px;
+
+    }
+
+    .timestamp{
+
+    text-align:right;
+
+    color:#64748b;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-bottom:20px;
+
+}
+
+.timestamp i{
+
+    color:#2563eb;
+
+    margin-right:6px;
+
+}
+
+.resume-card.technical-strengths{
+    border-left:6px solid #22c55e;
+}
+
+.resume-card.weaknesses{
+    border-left:6px solid #ef4444;
+}
+
+.resume-card.missing-skills{
+    border-left:6px solid #f59e0b;
+}
+
+.resume-card.ats-improvements{
+    border-left:6px solid #8b5cf6;
+}
+
+.resume-card.project-recommendations{
+    border-left:6px solid #06b6d4;
+}
+
+.resume-card.career-recommendations{
+    border-left:6px solid #6366f1;
+}
+
+.resume-card.final-verdict{
+    border-left:6px solid #eab308;
+}
+
+    @media(max-width:768px){
+
+        .header h1{
+
+            font-size:34px;
+
+        }
+
+        .analysis-card{
+
+            padding:20px;
+
+        }
+
+        .score-box p{
+
+            font-size:30px;
+
+        }
+
+
+
+    }
+
+
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<div class="header">
+
+    <i class="fa-solid fa-chart-line"></i>
+
+    <h1>AI Resume Analysis Report</h1>
+
+    <p>
+
+        ATS Evaluation • Skill Analysis • Career Guidance
+
+    </p>
+
+</div>
+<div class="analysis-card">
+
+<div class="timestamp">
+
+    <i class="fa-solid fa-clock"></i>
+
+    Generated on:
+    {{ timestamp }}
+
+</div>
+
+    <div class="ats-summary">
+
+    <div class="progress-ring"
+     style="--score: {{ ats_score * 36 }}deg;">
+
+        <div class="progress-inner">
+
+            <h2>{{ ats_score * 10 }}%</h2>
+
+            <span>ATS</span>
+
+        </div>
+
+    </div>
+
+    
+    <div class="score-breakdown">
+
+    <div class="metric success">
+
+        <span>✅ ATS Match</span>
+
+        <strong>{{ ats_score * 10 }}%</strong>
+
+    </div>
+
+    <div class="metric warning">
+
+        <span>📈 Improvement Potential</span>
+
+        <strong>{{ 100 - (ats_score * 10) }}%</strong>
+
+    </div>
+
+</div>
+
+    <div class="ats-info">
+
+        <h2>🏆 Resume Grade: {{ grade }}</h2>
+
+        <p>ATS Compatibility Score</p>
+
+        <p class="status">
+
+{% if ats_score >= 8 %}
+
+    Strong Placement Readiness
+
+{% elif ats_score >= 6 %}
+
+    Moderate Placement Readiness
+
+{% else %}
+
+    Needs Significant Improvement
+
+{% endif %}
+
+</p>
+    </div>
+
+</div>
+
+    <div class="score-box">
+
+        <h2>
+            📊 Resume Evaluation
+        </h2>
+
+        <p>
+            ATS Analysis Complete
+        </p>
+
+    </div>
+    
+
+    <div class="cards-container">
+
+{% for heading, content in sections.items() %}
+
+<div class="resume-card {{ heading|lower|replace(' ','-') }}">
+
+    <h3>
+
+{% if heading == "SUMMARY" %}
+💼 Professional Summary
+
+{% elif heading == "TECHNICAL STRENGTHS" %}
+🚀 Technical Strengths
+
+{% elif heading == "WEAKNESSES" %}
+⚠️ Weaknesses
+
+{% elif heading == "MISSING SKILLS" %}
+📚 Missing Skills
+
+{% elif heading == "ATS IMPROVEMENTS" %}
+🔧 ATS Improvements
+
+{% elif heading == "PROJECT RECOMMENDATIONS" %}
+💡 Project Recommendations
+
+{% elif heading == "CAREER RECOMMENDATIONS" %}
+🎯 Career Recommendations
+
+{% elif heading == "FINAL VERDICT" %}
+🏆 Final Verdict
+
+{% else %}
+{{ heading }}
+
+{% endif %}
+
+</h3>
+
+    {% if heading == "MISSING SKILLS" %}
+
+    {% for item in content %}
+
+        <span class="skill-tag">
+            {{ item.replace("-","") }}
+        </span>
+
+    {% endfor %}
+
+{% else %}
+
+    {% for item in content %}
+
+        <p>{{ item }}</p>
+
+    {% endfor %}
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+    <div class="button-group">
+
+    <a href="/download_report"
+       class="btn download-btn">
+
+        📥 Download Report
+
+    </a>
+
+    <a href="/resume"
+       class="btn analyze-btn">
+
+        🔄 Analyze Another Resume
+
+    </a>
+
+    <a href="/"
+       class="btn home-btn">
+
+        🏠 Back To Home
+
+    </a>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+    Powered by EnggBuddy AI 🚀
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>
