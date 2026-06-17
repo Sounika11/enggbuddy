@@ -132,7 +132,7 @@ Resume:
     try:
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model="gemini-2.0-flash",
             contents=prompt
         )
 
@@ -243,10 +243,9 @@ Please check your API key.
 """
 
         else:
-            result = """
-⚠️ Something went wrong.
-
-Please try again later.
+            result = f"""
+⚠️ Gemini Error:
+{str(e)}
 """
     return render_template(
     "result.html",
@@ -304,7 +303,7 @@ Difficulty: {difficulty}
 
 
             response = client.models.generate_content(
-                model="gemini-2.5-flash-lite",
+                model="gemini-2.0-flash",
                 contents=prompt
             )
 
@@ -416,7 +415,7 @@ Do not use bullet points.
     try:
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
+            model="gemini-2.0-flash",
             contents=prompt
         )
 
