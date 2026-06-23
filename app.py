@@ -491,14 +491,14 @@ Do not use bullet points.
 
     except Exception as e:
 
-    return render_template(
-        "interview_result.html",
-        cards=[],
-        topic=topic,
-        difficulty=difficulty,
-        question_type=question_type,
-        error=str(e)
-    )
+        return render_template(
+            "interview_result.html",
+            cards=[],
+            topic=topic,
+            difficulty=difficulty,
+            question_type=question_type,
+            error=str(e)
+        )
 
 
 @app.route("/download_report")
