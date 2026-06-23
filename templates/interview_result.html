@@ -340,6 +340,11 @@ AI Interview Questions
         {{ card.answer }}
 
     </div>
+    {% if error %}
+<div class="alert alert-danger">
+    {{ error }}
+</div>
+{% endif %}
 
 </div>
 
